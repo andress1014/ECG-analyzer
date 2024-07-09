@@ -10,12 +10,14 @@ def run_migration():
     return {"message": migration_result}
 
 @app.get("/process_data")
-def process_data_endpoint():
-    result = process_ecg_data()
-    if 'error' in result:
-        raise HTTPException(status_code=500, detail=result['message'])
-    return result
-
+def process_data():
+    try:
+        result = process_ecg_data()
+        if "message" in result and "Error" in result["message"]:
+            raise HTTPException(status_code=500, detail=result["message"])
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error processing data: {str(e)}")
 
 @app.get("/")
 def read_root():
