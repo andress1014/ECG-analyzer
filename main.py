@@ -3,7 +3,7 @@ import requests
 import pymongo
 from pymongo import MongoClient
 from pydantic import BaseModel
-from bson import ObjectId
+from typing import List, Dict
 
 app = FastAPI()
 
@@ -12,7 +12,7 @@ client = MongoClient('mongodb://localhost:27017/')
 db = client.ecg_database
 collection = db.ecg_signals
 
-# Modelo de datos
+# Modelo de datos para la señal
 class SignalData(BaseModel):
     name: str
     units: str
@@ -22,34 +22,58 @@ class SignalData(BaseModel):
     base: int
     tps: int
     scale: int
-    samp: list
+    samp: List[int]
+
+# Modelo de datos para el usuario y las señales
+class UserData(BaseModel):
+    user_info: Dict[str, str]
+    signal_data: List[SignalData]
 
 @app.get("/migrate")
 def migrate_data():
-    # Obtener datos desde el endpoint
-    url = "https://physionet.org/lightwave/server?action=fetch&db=ludb/1.0.1&record=data/1&signal=i&signal=ii&signal=iii&signal=avr&signal=avl&signal=avf&signal=v1&signal=v2&signal=v3&signal=v4&signal=v5&signal=v6&t0=0&dt=10"
-    response = requests.get(url)
-    
-    if response.status_code != 200:
-        return {"error": "Failed to fetch data from the endpoint"}
-
-    data = response.json().get("fetch", {}).get("signal", [])
-
-    # Imprimir el nombre del primer elemento de la señal para depuración
-    if data:
-        print(f"First signal name: {data[0]['name']}")
-    
-    # Migrar datos a MongoDB
     migrated_count = 0
-    for signal in data:
-        signal_data = SignalData(**signal)
-        result = collection.insert_one(signal_data.dict())
+    for record_id in range(1, 201):
+        # Obtener información del usuario
+        user_url = f"https://physionet.org/lightwave/server?action=info&db=ludb/1.0.1&record=data/{record_id}"
+        user_response = requests.get(user_url)
+        
+        if user_response.status_code != 200:
+            print(f"Failed to fetch user data for record {record_id}")
+            continue
+        
+        user_info = user_response.json().get("info", {})
+        
+        # Procesar las notas para extraer información del usuario
+        notes = user_info.get("note", [])
+        user_details = {
+            "age": notes[0].split(": ")[1],
+            "sex": notes[1].split(": ")[1],
+            "diagnoses": " ".join(notes[2:])
+        }
+
+        # Obtener datos de las señales desde el endpoint
+        signal_url = f"https://physionet.org/lightwave/server?action=fetch&db=ludb/1.0.1&record=data/{record_id}&signal=i&signal=ii&signal=iii&signal=avr&signal=avl&signal=avf&signal=v1&signal=v2&signal=v3&signal=v4&signal=v5&signal=v6&t0=0&dt=5"
+        signal_response = requests.get(signal_url)
+        
+        if signal_response.status_code != 200:
+            print(f"Failed to fetch signal data for record {record_id}")
+            continue
+
+        signal_data = signal_response.json().get("fetch", {}).get("signal", [])
+
+        # Preparar datos para MongoDB
+        signal_objects = [SignalData(**signal).dict() for signal in signal_data]
+        user_data = UserData(user_info=user_details, signal_data=signal_objects)
+        
+        # Insertar datos en MongoDB
+        result = collection.insert_one(user_data.dict())
+        
         if result.inserted_id:
             migrated_count += 1
         else:
-            print(f"Failed to insert signal: {signal_data.name}")
+            print(f"Failed to insert data for record {record_id}")
 
-    return {"message": f"Migrated {migrated_count} signals to MongoDB"}
+    return {"message": f"Migrated {migrated_count} records to MongoDB"}
 
 @app.get("/test-mongo")
 def test_mongo_connection():
