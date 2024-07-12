@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 from migration import migrate_data
 from process_data import process_ecg_data
 
@@ -10,9 +10,9 @@ def run_migration():
     return {"message": migration_result}
 
 @app.get("/process_data")
-def process_data():
+def process_data(id_migration: str = Query(..., description="Unique identifier for the migration batch")):
     try:
-        result = process_ecg_data()
+        result = process_ecg_data(id_migration=id_migration)
         if "message" in result and "Error" in result["message"]:
             raise HTTPException(status_code=500, detail=result["message"])
         return result

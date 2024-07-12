@@ -4,3 +4,5 @@
 # Otras reglas de ignorar (si las tienes)
 # Ejemplo: ignorar archivos de logs
 *.log
+# Ignorar archivos de configuración
+.env
