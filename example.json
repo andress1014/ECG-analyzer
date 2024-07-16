@@ -1,0 +1,144 @@
+{
+  "_id": "6690a64871a5de38f7a518de",
+  "transaction_id": "4233a13a-5c60-43a0-b5e4-e0af15d5dbc3",
+  "user_info": {
+    "age": "51",
+    "sex": "F",
+    "diagnoses": "<diagnoses>: Rhythm: Sinus bradycardia. Electric axis of the heart: left axis deviation.  Left ventricular hypertrophy.  Left ventricular overload.  Non-specific repolarization abnormalities: posterior wall. "
+  },
+  "signal_data": [
+    {
+      "name": "i",
+      "units": "mV",
+      "t0": 0,
+      "tf": 2500,
+      "gain": 1716,
+      "base": 6,
+      "tps": 1,
+      "scale": 1,
+      "samp": [-120, 77, 78, 67]
+    },
+    {
+        "name": "ii",
+        "units": "mV",
+        "t0": 0,
+        "tf": 2500,
+        "gain": 1716,
+        "base": 6,
+        "tps": 1,
+        "scale": 1,
+        "samp": [-120, 77, 78, 67]
+    },
+    {
+        "name": "iii",
+        "units": "mV",
+        "t0": 0,
+        "tf": 2500,
+        "gain": 1716,
+        "base": 6,
+        "tps": 1,
+        "scale": 1,
+        "samp": [-120, 77, 78, 67]
+    },
+    {
+        "name": "avr",
+        "units": "mV",
+        "t0": 0,
+        "tf": 2500,
+        "gain": 1716,
+        "base": 6,
+        "tps": 1,
+        "scale": 1,
+        "samp": [-120, 77, 78, 67]
+    },
+    {
+        "name": "avl",
+        "units": "mV",
+        "t0": 0,
+        "tf": 2500,
+        "gain": 1716,
+        "base": 6,
+        "tps": 1,
+        "scale": 1,
+        "samp": [-120, 77, 78, 67]
+    },
+    {
+        "name": "avf",
+        "units": "mV",
+        "t0": 0,
+        "tf": 2500,
+        "gain": 1716,
+        "base": 6,
+        "tps": 1,
+        "scale": 1,
+        "samp": [-120, 77, 78, 67]
+    },
+    {
+        "name": "v1",
+        "units": "mV",
+        "t0": 0,
+        "tf": 2500,
+        "gain": 1716,
+        "base": 6,
+        "tps": 1,
+        "scale": 1,
+        "samp": [-120, 77, 78, 67]
+    },
+    {
+        "name": "v2",
+        "units": "mV",
+        "t0": 0,
+        "tf": 2500,
+        "gain": 1716,
+        "base": 6,
+        "tps": 1,
+        "scale": 1,
+        "samp": [-120, 77, 78, 67]
+    },
+    {
+        "name": "v3",
+        "units": "mV",
+        "t0": 0,
+        "tf": 2500,
+        "gain": 1716,
+        "base": 6,
+        "tps": 1,
+        "scale": 1,
+        "samp": [-120, 77, 78, 67]
+    },
+    {
+        "name": "v4",
+        "units": "mV",
+        "t0": 0,
+        "tf": 2500,
+        "gain": 1716,
+        "base": 6,
+        "tps": 1,
+        "scale": 1,
+        "samp": [-120, 77, 78, 67]
+    },
+    {
+        "name": "v5",
+        "units": "mV",
+        "t0": 0,
+        "tf": 2500,
+        "gain": 1716,
+        "base": 6,
+        "tps": 1,
+        "scale": 1,
+        "samp": [-120, 77, 78, 67]
+    },
+    {
+        "name": "v6",
+        "units": "mV",
+        "t0": 0,
+        "tf": 2500,
+        "gain": 1716,
+        "base": 6,
+        "tps": 1,
+        "scale": 1,
+        "samp": [-120, 77, 78, 67]
+    }
+  ],
+  "id_migration": "bc4fa278-c9a3-40ab-a5cb-56415afd2d2b"
+}
