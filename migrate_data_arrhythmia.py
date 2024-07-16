@@ -12,7 +12,6 @@ from mysql.connector import Error
 load_dotenv()
 
 # Obtener las variables de entorno
-record_range = 200  # Valor por defecto es 200 si no se define la variable de entorno
 mongo_uri = os.getenv('MONGO_URI', 'mongodb://localhost:27017/')
 mysql_host = os.getenv('MYSQL_HOST', 'localhost')
 mysql_database = os.getenv('MYSQL_DATABASE', 'ecg')
@@ -43,11 +42,14 @@ class UserData(BaseModel):
     signal_data: List[SignalData]
     id_migration: str
 
-def migrate_data():
+def migrate_data_arrhythmia():
     migrated_count = 0
     id_migration = str(uuid.uuid4())  # Generar un id_migration único para la migración actual
-    for record_id in range(1, record_range + 1):
+    record_ids = [22, 63, 99, 156, 158, 178, 197]
+
+    for record_id in record_ids:
         # Obtener información del usuario
+        print(record_id)
         user_url = f"https://physionet.org/lightwave/server?action=info&db=ludb/1.0.1&record=data/{record_id}"
         user_response = requests.get(user_url)
         
@@ -125,4 +127,5 @@ def migrate_data():
             print(f"Failed to insert data for record {record_id}")
 
     return f"Migrated {migrated_count} records to MongoDB and MySQL"
+
 

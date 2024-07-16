@@ -8,6 +8,7 @@ from deep_learning import train_and_evaluate_models
 from list_patients import list_patients  # Asegúrate de tener este archivo
 from user_details import router as user_details_router
 from prediction import predict_arrhythmia  # Importa la función de predicción
+from migrate_data_arrhythmia import migrate_data_arrhythmia  # Importa la función de migración
 
 # Importar las funciones o clases necesarias para trabajar con MongoDB
 from pymongo import MongoClient
@@ -119,6 +120,13 @@ def predict_arrhythmia_endpoint(transaction_id: str = Query(..., description="Tr
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error predicting arrhythmia: {str(e)}")
+    
+    
+@app.get("/migrate_data_arrhythmia")
+def run_migration():
+    migration_result = migrate_data_arrhythmia()
+    return {"message": migration_result}
+
 
 @app.get("/")
 def read_root():
